@@ -1,3 +1,6 @@
 # MSCharts
 
-A description of this package.
+Package to draw charts with SwiftUI.
+
+Mostly for my personal use & learning.
+
