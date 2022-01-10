@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct ChartInteractivePreview: View {
+public struct ChartInteractivePreview: View {
     @State private var people: [Person] = faces.map {
         Person(emoji: $0, age: (1...100).randomElement()!)
     }
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         VStack {
             HStack {
                 Button("Add") {
@@ -48,14 +50,12 @@ struct ChartInteractivePreview: View {
                 } dataLabel: {
                     String($0.age)
                 }
-            }.frame(width: 300)
+
+                Spacer()
+            }
         }
-
-
-
     }
 }
-
 
 struct Chart_Previews: PreviewProvider {
     static var previews: some View {
