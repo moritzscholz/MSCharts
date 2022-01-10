@@ -47,6 +47,8 @@ public struct ChartInteractivePreview: View {
                     Text(verbatim: $0.emoji)
                 } data: {
                     Double($0.age)
+                } dataLabel: {
+                    String($0.age)
                 }
 
                 Spacer()

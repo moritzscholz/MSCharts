@@ -8,8 +8,6 @@
 import SwiftUI
 
 /// Draws a horizontal bar chart
-/// - Note
-///     Adding `dataLabel`s currently breaks the layout.
 ///
 public struct BarChart<Items, ElementLabel, ElementFill>: View
 where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: View, ElementFill: ShapeStyle {
@@ -60,11 +58,11 @@ where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: 
                             .readSize { maxLabelWidth = max(maxLabelWidth, $0.width) }
                             .frame(width: maxLabelWidth, alignment: style.labelAlignment)
 
-                        Bar(width: !isVisible ? 0 : barWidth(
-                            value: data(item), maxValue: maxValue,
+                        Bar(width: barWidth(value: data(item), maxValue: maxValue,
                             availableWidth: availableBarWidth),
                             fill: elementFill(item: item))
                             .frame(height: style.barThickness)
+                            .scaleEffect(x: isVisible ? 1 : 0, anchor: .leading)
 
                         if let dataLabel = dataLabel {
                             Text(dataLabel(item))
@@ -93,8 +91,7 @@ where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: 
     }
 
     func barWidth(value: Double, maxValue: Double, availableWidth: CGFloat) -> CGFloat {
-        guard value > 0 else { return 0 }
-        guard maxValue > 0 else { return .infinity }
+        guard value > 0, maxValue > 0, availableWidth > 0 else { return 0 }
 
         return availableWidth / CGFloat(maxValue) * CGFloat(value)
     }
