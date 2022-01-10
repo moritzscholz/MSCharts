@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+/// Draws a horizontal bar chart
+/// - Note
+///     Adding `dataLabel`s currently breaks the layout.
+///
 public struct BarChart<Items, ElementLabel, ElementFill>: View
 where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: View, ElementFill: ShapeStyle {
     public let items: Items
@@ -37,16 +41,16 @@ where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: 
         self.init(items: items, fill: .uniform(fillStyle), label: label, data: data)
     }
 
+    @State private var totalViewWidth: CGFloat = .zero
     @State private var maxLabelWidth: CGFloat = .zero
     @State private var maxDataLabelWidth: CGFloat = .zero
-    @State private var availableBarWidth: CGFloat = .zero
-    
+
     @State private var isVisible: Bool = false
 
     public var body: some View {
         ZStack {
             Color.clear.frame(height: 1)
-                .readSize { availableBarWidth = availableBarWidth(totalViewWidth: $0.width) }
+                .readSize { totalViewWidth = $0.width }
 
             VStack(alignment: .leading, spacing: style.verticalSpacing) {
                 ForEach(items) { item in
@@ -105,7 +109,7 @@ where Items: RandomAccessCollection, Items.Element: Identifiable, ElementLabel: 
         }
     }
 
-    private func availableBarWidth(totalViewWidth: CGFloat) -> CGFloat {
+    var availableBarWidth: CGFloat {
         totalViewWidth
         // For bar labels
         - maxLabelWidth - style.horizontalSpacing
